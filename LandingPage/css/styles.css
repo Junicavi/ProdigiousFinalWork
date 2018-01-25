@@ -23,9 +23,9 @@ body{
   z-index: 1;
 }
 .next-icon {
-  left: 48.5%;
+  left: 50%;
   position: absolute;
-  top: 3250px;
+  top: 346%;
   width: 64px;
   z-index: 1;
 }
@@ -92,7 +92,7 @@ body{
   color: #fff;
   font-size: 1.5em;
   line-height: 45px;
-  margin-left: 1367px;
+  margin-left: 1200px;
   text-align: justify;
   width: 460px;
 }
@@ -111,8 +111,9 @@ body{
 }
 
 .InfoGrid {
-  padding-left: 139px;
+  padding-left: 25px;
   width: 100%;
+  padding-top: 50px;
 }
 .slogan {
   padding-left: 333px;
@@ -127,13 +128,9 @@ body{
 }
 
 .Article {
-  /*border:2px solid #426;*/
-  /*text-align: justify;*/
-  /*width:100px;*/
   display: inline-block;
-  padding-left: 0px;
-  padding-right: 200px;
-  padding-top: 40px;
+  padding-left: 12px;
+  padding-right: 50px;
 }
  .InfoTittle {
   font-weight: bolder;
@@ -186,12 +183,8 @@ body{
   vertical-align: middle;
 }
 .Article-Three {
-  /*border:2px solid #426;*/
-  /*text-align: justify;*/
-  /*width:100px;*/
   display: inline-block;
-  padding-left: 88px;
-  padding-right: 136px;
+  padding-right: 50px;
   padding-top: 40px;
 }
 
