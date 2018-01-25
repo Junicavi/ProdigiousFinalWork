@@ -16,7 +16,7 @@ canvas {
 .ButtonsContainer {
 	display: flex;
 	position: absolute;
-	width: 23%;
+	width: 30%;
 	top: 2%;
 	left: 2%;
 	border: 1px solid green;
@@ -56,4 +56,14 @@ canvas {
 	font-weight: bolder;
 	background-color: #b3b3cc;
 	border: 2px solid green;
+}
+
+.ButtonAnimation2:hover {
+	background-color: #ffffff;
+}
+
+.ButtonAnimation2:active {
+	background-color: yellow;
+	box-shadow: 0 5px #666;
+	transform: translateY(4px);
 }

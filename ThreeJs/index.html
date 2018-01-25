@@ -9,16 +9,16 @@
     <div class="ButtonsContainer">
         <div class="OpenButtonsContainer">
         <button class="ButtonAnimation" onclick="OpenDriverDoor()">Open Driver Door</button>
-        <button class="ButtonAnimation" onclick="CoPilotDoor()">Open Co-Pilot Door</button>
-        <button class="ButtonAnimation" onclick="RightDoor()">Open Right Door</button>
-        <button class="ButtonAnimation" onclick="LeftDoor()">Open Left Door</button>               
+        <button class="ButtonAnimation" onclick="OpenCoPilotDoor()">Open Co-Pilot Door</button>
+        <button class="ButtonAnimation" onclick="OpenRightDoor()">Open Right Door</button>
+        <button class="ButtonAnimation" onclick="OpenLeftDoor()">Open Left Door</button>               
         <button class="ButtonAnimation" onclick="SpinWheels()">Spin Wheels</button>               
         </div>
     <div class="CloseButtonsContainer">
         <button class="ButtonAnimation" onclick="CloseDriverDoor()">Close Driver Door</button>
-        <button class="ButtonAnimation" onclick="CloseDriverDoor()">Close Co-Pilor Door</button>
-        <button class="ButtonAnimation" onclick="CloseDriverDoor()">Close Right Door</button>
-        <button class="ButtonAnimation" onclick="CloseDriverDoor()">Close Left Door</button>
+        <button class="ButtonAnimation" onclick="CloseCoPilotDoor()">Close Co-Pilor Door</button>
+        <button class="ButtonAnimation" onclick="CloseRightDoor()">Close Right Door</button>
+        <button class="ButtonAnimation" onclick="CloseLeftDoor()">Close Left Door</button>
         <button class="ButtonAnimation" onclick="StopWheels()">Stop Wheels</button>
     </div>
     <div class="FullButtons">
@@ -86,36 +86,7 @@
         controls.maxPolarAngle = Math.PI/2.1;
         controls.autoRotate = false;
         controls.update();
-
-        // var DriverDoor = (function () {
-        //     var first = true;
-        //     return function() {
-        //         first ? OpenDriverDoor() : DisplayCloseDriverDoor();
-        //         first = !first;
-        //     }
-        // })();
-        // var Wheels = (function () {
-        //     var first = true;
-        //     return function() {
-        //         first ? SpinWheels() : StopWheels();
-        //         first = !first;
-        //     }
-        // })();
-
-        // var EPICDOOR = function () {
-        //     requestAnimationFrame(EPICDOOR);
-        //     if(player.children[13].rotation.z >= -maxLeftRotation ){
-        //         player.children[13].rotation.z += -0.01;
-        //         player.children[13].translateX(0.25);
-        //         console.log(player.children[13].rotation.z);
-        //     }
-        //     else{
-        //         player.children[13].rotation.z += 0.01;
-        //         player.children[13].translateX(-0.25);
-        //         console.log(player.children[13].rotation.z);  
-        //     }
-        // }        
-
+        // DRIVER DOOR FUNCTIONS//
         var OpenDriverDoor = function () {
             requestAnimationFrame(OpenDriverDoor);
             if(player.children[13].rotation.z >= -maxLeftRotation ){
@@ -131,29 +102,54 @@
                 player.children[13].translateX(-0.25);
                 console.log(player.children[13].rotation.z); 
             }
-            return;
-        }        
-        var CoPilotDoor = function () {
-            requestAnimationFrame(CoPilotDoor);
+        }
+        // CO-PILOT DOOR FUNCTIONS    
+        var OpenCoPilotDoor = function () {
+            requestAnimationFrame(OpenCoPilotDoor);
             if(player.children[26].rotation.z < -maxRightRotation ){
                 player.children[26].rotation.z += 0.01;
                 player.children[26].translateX(-0.25);
             }
         }
-        var LeftDoor = function () {
-            requestAnimationFrame(LeftDoor);
+
+        var CloseCoPilotDoor = function () {
+            requestAnimationFrame(CloseCoPilotDoor);
+            if(player.children[26].rotation.z > minRotation ){
+                player.children[26].rotation.z += -0.01;
+                player.children[26].translateX(0.25);
+            }
+        }
+        // LEFT DOOR FUNCTIONS
+        var OpenLeftDoor = function () {
+            requestAnimationFrame(OpenLeftDoor);
             if(player.children[27].rotation.z > -maxLeftRotation ){
                 player.children[27].rotation.z += -0.01; //DRIVER DOOR
                 player.children[27].translateX(0.18);
             }
         }
-        var RightDoor = function () {
-            requestAnimationFrame(RightDoor);
+        var CloseLeftDoor = function () {
+            requestAnimationFrame(CloseLeftDoor);
+            if(player.children[27].rotation.z < minRotation ){
+                player.children[27].rotation.z += 0.01; //DRIVER DOOR
+                player.children[27].translateX(-0.18);
+            }
+        }
+        // RIGHT DOOR FUNCTIONS        
+        var OpenRightDoor = function () {
+            requestAnimationFrame(OpenRightDoor);
             if(player.children[29].rotation.z < -maxRightRotation ){
                 player.children[29].rotation.z += 0.01; //DRIVER DOOR
                 player.children[29].translateX(-0.18);  
             }            
         }
+        var CloseRightDoor = function () {
+            requestAnimationFrame(CloseRightDoor);
+            if(player.children[29].rotation.z > minRotation ){
+                player.children[29].rotation.z += -0.01; //DRIVER DOOR
+                player.children[29].translateX(0.18);  
+            }            
+        }     
+        // WHEELS FUNCTION   
         var SpinWheels = function () {
             requestAnimationFrame(SpinWheels);
             player.children[1].rotation.y += 1;
@@ -168,13 +164,13 @@
             player.children[5].rotation.y =+ 0;
             player.children[7].rotation.y =+ 0;
         }
-
+        // ON-OFF AUTO ROTATE FUNCTION
         var RotateFunction = function () {
-            if(autoRotate === true) {
-                autoRotate = false;
+            if(controls.autoRotate === true) {
+                controls.autoRotate = false;
             }
             else {
-                autoRotate = true;
+                controls.autoRotate = true;
             }
         }
 
