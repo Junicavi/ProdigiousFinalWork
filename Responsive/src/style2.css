@@ -1,0 +1,190 @@
+body {
+	font-family: 'Montserrat', sans-serif;
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+.Main-Container {
+	display: inline-block;
+	text-align: left;
+}
+.Header {
+	background-color: #373c3f;
+	overflow: hidden;
+}
+
+.NavBar a{
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.NavBar a:visited {
+	color: #ffffff;
+}
+
+.NavIcon {
+	background-color: #202529;
+}
+
+.NavBar a:not(:first-child) {display: none;}
+.NavBar a.NavIcon {
+	float: right;
+	display: block;
+}
+
+.NavBar.responsive {position: relative;}
+.NavBar.responsive a.NavIcon {
+	position: absolute;
+	right:0; 
+	top:0;
+}
+  .NavBar.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+
+  .Hero {
+	align-items: center;
+	background: -moz-linear-gradient(bottom right, #19B4C6, #078AA4); /* For Firefox 3.6 to 15 */
+	background: -o-linear-gradient(bottom right, #19B4C6, #078AA4); /* For Opera 11.1 to 12.0 */
+	background: -webkit-linear-gradient(left top, #19B4C6, #078AA4); /* For Safari 5.1 to 6.0 */
+	background: linear-gradient(to bottom right, #19B4C6, #078AA4); /* Standard syntax */
+	display: flex;
+	height: 175px;
+	width: 100%;
+}
+
+.Hero-Tittle {
+	color:#ffffff;
+	font-size: 6vw;
+	margin-right: 0px;
+	padding-left: 10%;
+	padding-right: 0px;
+}
+
+
+
+.Hero-Tittle-Lv-2-Text {
+	color: #a6d4de;
+	display: inline;
+	font-size: 5vw;
+	font-weight: normal;
+	margin-right: 0px;
+	padding-left: 10%;
+	padding-right: 18%;
+	vertical-align: middle;
+}
+
+.Icon {
+	height: 10px;
+	width: 9px;
+}
+
+.IconClass {
+	padding: 25px 35px;
+	margin: 0;
+	letter-spacing: 2em;
+}
+
+.Info-1 {
+	display: flex;
+	height:75px;
+	padding-top: 0px;
+	width: 100%;
+}
+
+.Info-Tittle {
+	align-items: center;
+	background-color: #27212c;
+	color: #9887a6;
+	display: flex;
+	height: 100%;
+	padding-left: 10%;
+	width: 75%;
+}
+
+.Info-Tittle-Text {
+	font-weight: normal;
+	font-size: 3vw;
+}
+
+.Icon-Link {
+	align-items: center;
+	background-color: #bc3183;
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	width: 25%;
+}
+
+.Icon-Link-Image {
+	width: 15%;
+	margin-left: 35%;
+}
+
+.Grid {
+	width: 100%;
+}
+
+.Info-Grid-1 {
+	align-items: center;
+	background-color: #5b0fa1;
+	display: flex;
+	height: 275px;
+	justify-content: center;
+	width: 100%;
+}
+
+.Info-Grid-2 {
+	background-color: #5e7dd0;	
+	height: 275px;
+	width: 100%;
+}
+
+.Info-Grid-3 {
+	background-color: #e3ad93;
+	height: 275px;
+	width: 100%;
+}
+
+.Info-Grid-Link {
+	height: 21.5px;
+	width: 17px;
+}
+.Info-Grid-Link-Full {
+	height: 100%;
+	width: 100%;
+}
+
+.Info-Content {
+	background-color: #dedcdc;
+	padding-top: 30px;
+	width: 100%;
+}
+
+.Info-Content-Tittle {
+	color: #088ca5;
+	padding-left: 10%;
+	font-size: 6vw;
+	padding-bottom: 5%;
+}
+
+.Info-Content-Text {
+	color: #515151;
+	font-size: 13px;
+	line-height: 2em;
+	padding-left: 10%;
+	padding-right: 10%;
+	text-align: left;
+}
+
+.Info-Content-Text p{
+	margin:0px;
+	padding-bottom: 30px;
+}

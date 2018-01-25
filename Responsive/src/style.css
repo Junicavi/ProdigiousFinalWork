@@ -1,0 +1,181 @@
+body {
+	font-family: 'Montserrat', sans-serif;
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+.Main-Container {
+	display: inline-block;
+	max-width: 1024px;
+	text-align: left;
+}
+
+.Header {
+	align-items: center;
+	background-color: #373c3f;
+	display: flex;
+	height: 97px;
+	justify-content: space-around;
+	width: 100%;
+}
+
+.NavBar {
+	color: #ffffff;
+	margin-left: 5%;
+	margin-right: auto;
+}
+
+.NavBar a {
+	text-decoration: none;
+	color: #ffffff;
+	padding-right: 40px;
+}
+
+.NavBar a:visited {
+	color: #ffffff;
+}
+
+.NavIcon {
+	display: none;
+}
+.NavBar a:first-child {display: none;}
+
+.Hero {
+	align-items: center;
+	background: -moz-linear-gradient(bottom right, #19B4C6, #078AA4); /* For Firefox 3.6 to 15 */
+	background: -o-linear-gradient(bottom right, #19B4C6, #078AA4); /* For Opera 11.1 to 12.0 */
+	background: -webkit-linear-gradient(left top, #19B4C6, #078AA4); /* For Safari 5.1 to 6.0 */
+	background: linear-gradient(to bottom right, #19B4C6, #078AA4); /* Standard syntax */
+	display: flex;
+	height: 580px;
+	width: 100%;
+}
+
+.Hero-Tittle {
+	color:#ffffff;
+	font-size: 65px;
+	margin-right: 0px;
+	padding-left: 10%;
+	padding-right: 0px;	
+}
+
+.Hero-Tittle br {
+	display: none;
+}
+
+.Hero-Tittle-Lv-2-Text {
+	color: #a6d4de;
+	display: inline;
+	font-size: 45px;
+	font-weight: normal;
+	margin-right: 0px;
+	padding-left: 10%;
+	padding-right: 31%;
+	vertical-align: middle;
+}
+
+.Icon {
+	height: 25px;
+	vertical-align: -webkit-baseline-middle;
+	width: 15px;
+}
+
+.Info-1 {
+	display: flex;
+	height:245px;
+	padding-top: 0px;
+	width: 100%;
+}
+
+.Info-Tittle {
+	align-items: center;
+	background-color: #27212c;
+	color: #9887a6;
+	display: flex;
+	height: 100%;
+	padding-left: 10%;
+	width: 75%;
+}
+
+.Info-Tittle-Text {
+	font-weight: normal;
+}
+
+.Icon-Link {
+	align-items: center;
+	background-color: #bc3183;
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	width: 25%;
+}
+
+.Icon-Link-Image {
+	width: 40%;
+}
+
+.Grid {
+	display: flex;
+	height: 300px;
+	width: 100%;
+}
+
+.Info-Grid-1 {
+	align-items: center;
+	background-color: #5b0fa1;
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	width: 33.33%;
+}
+
+.Info-Grid-2 {
+	background-color: #5e7dd0;	
+	height: 100%;
+	width: 33.34%;
+}
+
+.Info-Grid-3 {
+	background-color: #e3ad93;
+	height: 100%;
+	width: 33.33%;
+}
+
+.Info-Grid-Link {
+	height: 21.5px;
+	width: 17px;
+}
+.Info-Grid-Link-Full {
+	height: 100%;
+	width: 100%;
+}
+
+.Info-Content {
+	background-color: #dedcdc;
+	/*height: 575px;*/
+	padding-top: 30px;
+	width: 100%;
+}
+
+.Info-Content-Tittle {
+	color: #088ca5;
+	padding-left: 10%;
+}
+
+.Info-Content-Text {
+	-moz-column-count:2;
+	-webkit-column-count:2;
+	color: #515151;
+	column-count:2;
+	column-gap: 50px;
+	font-size: 13px;
+	line-height: 2em;
+	padding-left: 10%;
+	padding-right: 10%;
+	text-align: left;
+}
+
+.Info-Content-Text p{
+	margin:0px;
+	padding-bottom: 30px;
+}
