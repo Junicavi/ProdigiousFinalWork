@@ -12,6 +12,8 @@ Tras ingresar a la ubicación en la que se desea clonar el repositorio, ingresar
 ## JS-Gallery, Landing Page Y Responsive
 Estos ejercicios fueron realizados con HTML, CSS y Javascript. Para visualizarlos, simplemente abrir el archivo `index.html` correspondiente a cada carpeta.
 
+El ejercicio LandingPage, NO es responsive, motivo por el cuál se recomienda visualizarlo en una pantalla 1920x1080.
+
 ## ThreeJs
 Este ejercicio requiere de un servidor `PHP`, para correrlo, a continuación se dan los pasos para ejecutar uno de manera local en Mac; en Windows se puede configurar uno con herramientas como [XAMPP](https://www.apachefriends.org/es/download.html) 
 
