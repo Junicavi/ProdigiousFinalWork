@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Three JS Test</title>
+    <link rel="stylesheet" type="text/css" href="src/style.css">
+</head>
+<body>
+    <div class="ButtonControllersContainer">
+        <div class="OpenButtonsContainer">
+            <button class="ButtonAnimation" id="DriverDoorButton" onclick="changeDriverDoorState()">Open Driver Door</button>
+            <button class="ButtonAnimation" id="CoPilotDoorButton" onclick="changeCopilotDoorState()">Open Co-Pilot Door</button>
+            <button class="ButtonAnimation" id="LeftDoorButton" onclick="changeLeftDoorState()">Open Left Door</button>               
+            <button class="ButtonAnimation" id="RightDoorButton" onclick="changeRightDoorState()">Open Right Door</button>
+            <button class="ButtonAnimation" id="WheelsButton" onclick="changeWheelsState()">Spin Wheels</button>                            
+            <button class="ButtonAnimation" id="HoodDoorButton" onclick="changeHoodState()">Open Hood</button>                            
+            <button class="ButtonAnimation" id="TrunkButton" onclick="changeTrunkState()">Open Trunk</button>                            
+            <button class="ButtonAnimation" id="LookButton" onclick="RotateFunction()">Look Around</button>
+            <button class="ButtonAnimation" onclick="changeModelColors()">Random-White Color</button>
+            <button class="ButtonAnimation" id="MoveCarButton" onclick="changeCarState()">Move Car</button>
+            <button class="ButtonAnimation" onclick="increasePartNumber()">Change Part</button>
+            <button class ="ButtonAnimation" id="PartNumberText" disabled>Part Number: 0</button>
+        </div>
+    </div>
+        <div class="RightControllersContainer">
+            <div class="RCC-SideBySideContainer">
+                <div class="SlidersContainer">
+                    <input type="range" min="-10" max="10" value="0" id="PointLightXPosition" class="Slider">
+                    <input type="range" min="0" max="5" value="5" id="PointLightYPosition" class="Slider">
+                    <input type="range" min="-10" max="10" value="0" id="PointLightZPosition" class="Slider">
+                </div>
+                <div class="SlidersTextContainer">
+                    <div id="PointLightXPositionText" class="SliderText">X: 2</div>
+                    <div id="PointLightYPositionText" class="SliderText">Y: 2</div>
+                    <div id="PointLightZPositionText" class="SliderText">Z: 2</div>
+                </div>
+            </div>
+            <div class="GlobalButtonsContainer">
+                <button class="ButtonAnimation" id="ControlMusic" onclick="ChangeMusicState()" >Pause Music</button>                
+            </div>            
+        </div>
+    <script src="js/three.js"></script>
+    <script src="js/ColladaLoader.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script>
+        // RENDERER //
+        var renderer = new THREE.WebGLRenderer({antialias:true});
+        renderer.setSize(window.innerWidth,window.innerHeight);
+        document.body.appendChild( renderer.domElement);
+        //SCENE SETUP
+        var scene = new THREE.Scene();
+        scene.background = new THREE.Color (0x000000);
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        // var light = new THREE.AmbientLight( 0xffffff );
+        var lightXPosition, lightYPosition, lightZPosition;
+        var light = new THREE.PointLight(0xffffff,1,100);
+        light.position.set(lightXPosition,lightYPosition,lightZPosition);
+        var player = null;
+        var maxLeftRotation  = 2.8;
+        var maxRightRotation  = 0.37;
+        var minRotation= -1.6;
+        var maxVerticalRotation = 1;
+        var minVerticalRotation = 0;
+        var driverDoorState = false;
+        var copilotDoorState = false;
+        var leftDoorState = false;
+        var rightDoorState = false;
+        var wheelsState = false;
+        var hoodState = false;
+        var trunkState = false;
+        var partNumber = 0;
+        var colorState = false;
+        var carState = false;
+        var musicState = false;
+        //CAMERA SETUP
+        camera.position.y = 5;
+        camera.position.z = 5;
+        //DOOR OPEN SOUND SETUP
+        var listener = new THREE.AudioListener();
+        camera.add(listener);
+        var sound = new THREE.Audio(listener);
+        var audioLoader = new THREE.AudioLoader();
+        audioLoader.load('src/Sound/Car_Door_Opening.wav', function (buffer) {
+            sound.setBuffer(buffer);
+            sound.setLoop(false);
+            sound.setVolume(0.5);
+        });
+        //CLOSE OPEN SOUND SETUP
+        var listener2 = new THREE.AudioListener();
+        camera.add(listener2);
+        var sound2 = new THREE.Audio(listener2);
+        var audioLoader2 = new THREE.AudioLoader();
+        audioLoader2.load('src/Sound/Car_Door_Closing.mp3', function (buffer) {
+            sound2.setBuffer(buffer);
+            sound2.setLoop(false);
+            sound2.setVolume(0.5);
+        });
+        //CLOSE OPEN SOUND SETUP
+        var listener3 = new THREE.AudioListener();
+        camera.add(listener3);
+        var sound3 = new THREE.Audio(listener3);
+        var audioLoader3 = new THREE.AudioLoader();
+        audioLoader3.load('src/Sound/Wheels_Loop.wav', function (buffer) {
+            sound3.setBuffer(buffer);
+            sound3.setLoop(true);
+            sound3.setVolume(0.5);
+            sound3.hasPlayBackControl = true;
+        });  
+        //GLOBAL MUSIC SETUP
+        var listener4 = new THREE.AudioListener();
+        camera.add(listener4);
+        var mainSong = new THREE.Audio(listener4);
+        var audioLoader4 = new THREE.AudioLoader();
+        audioLoader4.load('src/Sound/TT.mp3', function (buffer) {
+            mainSong.setBuffer(buffer);
+            mainSong.setLoop(true);
+            mainSong.setVolume(0.5);
+            mainSong.hasPlayBackControl = true;
+            mainSong.play();
+        });                    
+        // PLANE SETUP //
+        var geometry = new THREE.PlaneGeometry(70,50);
+        var texture = new THREE.TextureLoader().load('src/Images/Floor4.jpg');
+        var material = new THREE.MeshBasicMaterial({map:texture});
+        var plane = new THREE.Mesh(geometry, material);
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(40,40);
+        plane.material.side = THREE.DoubleSide;
+        plane.rotation.x = Math.PI/2;
+        // ADDING ELEMENTS //
+        scene.add(light);
+        scene.add(plane);
+        // MODEL LOADER //
+        loader = new THREE.ColladaLoader();
+        loader.load('src/Models/Model2.dae',function colladaReady( collada ){
+            player = collada.scene;
+            for (var i=0; i < player.children.length; i++) {
+                player.children[i].material = new THREE.MeshStandardMaterial({
+                    color:randomColor(),
+                    // roughness: 0.5,
+                    // metalness: 1,
+                    // // roughnessMap: 1,
+                    // // metalnessMap: 1,
+                    // envMap: 0.5,
+                    // envMapIntensity:1
+                });
+            }
+            scene.add( player );
+        });
+        //CONTROLS SETUP
+        var controls = new THREE.OrbitControls( camera, renderer.domElement);
+        controls.minDistance = 3;
+        controls.maxDistance = 5;
+        controls.maxPolarAngle = Math.PI/2.1;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 1;        
+        function randomColor(){
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random()*16)];
+            }
+            return color;
+        }
+        var increasePartNumber = function () {
+            if(partNumber != 0) {
+                player.children[partNumber].material = new THREE.MeshStandardMaterial({color:0xffffff});
+            }             
+            partNumber++;
+            document.getElementById("PartNumberText").innerHTML = "Part Number: "+partNumber;
+            player.children[partNumber].material = new THREE.MeshStandardMaterial({
+                color:0x15ff00
+            });
+        }
+
+        function closeDoorSoundDelay () {
+            setTimeout (function () {
+                sound2.play();
+            }, 2000);
+        }
+
+        // STATE SWITCHER
+        var changeDriverDoorState = function () {
+            driverDoorState = !driverDoorState;
+            if(driverDoorState === true) {
+                sound.play();
+            }
+            else {
+                closeDoorSoundDelay();
+            }
+        }
+        var changeCopilotDoorState = function () {
+            copilotDoorState = !copilotDoorState;
+            if(copilotDoorState === true) {
+                sound.play();
+            }
+            else {
+                closeDoorSoundDelay();
+            }
+        }
+        var changeLeftDoorState = function () {
+            leftDoorState = !leftDoorState;
+            if(leftDoorState === true) {
+                sound.play();
+            }
+            else {
+                closeDoorSoundDelay();
+            }
+        }
+        var changeRightDoorState = function () {
+            rightDoorState = !rightDoorState;
+            if(rightDoorState === true) {
+                sound.play();
+            }
+            else {
+                closeDoorSoundDelay();
+            }
+        }
+        var changeWheelsState = function () {
+            wheelsState = !wheelsState;
+            if(wheelsState === true) {
+                sound3.play();
+            }
+            else {
+                sound3.stop();
+            }
+        }
+        var changeHoodState = function () {
+            hoodState = !hoodState
+            if(hoodState === true) {
+                sound.play();
+            }
+            else {
+                closeDoorSoundDelay();
+            }            
+        }
+        var changeTrunkState = function () {
+            trunkState = !trunkState;
+            if(trunkState === true) {
+                sound.play();
+            }
+            else {
+                closeDoorSoundDelay();
+            }            
+        }
+        var changeCarState = function () {
+            carState = !carState;
+        }
+        var ChangeMusicState = function () {
+            musicState = !musicState;
+            if(musicState === true) {
+                mainSong.pause();
+            }
+            else {
+                mainSong.play();
+            }
+        }
+        // ANIMATION TRIGGERS 
+        var driverDoorTrigger = function () {
+            if (player != null) {
+                if (driverDoorState) {
+                    if(player.children[13].rotation.z >= -maxLeftRotation ){
+                        player.children[13].rotation.z += -0.01;
+                        player.children[13].translateX(0.25);
+                    }
+                }
+                else {
+                    if(player.children[13].rotation.z < minRotation ){
+                        player.children[13].rotation.z += 0.01;
+                        player.children[13].translateX(-0.25);
+                    }
+                }
+            }
+        }
+        var copilotDoorTrigger = function () {
+            if (player != null) {
+                if (copilotDoorState) {
+                    if(player.children[26].rotation.z < -maxRightRotation ){
+                        player.children[26].rotation.z += 0.01;
+                        player.children[26].translateX(-0.25);
+                    }
+                }
+                else {
+                    if(player.children[26].rotation.z > minRotation ){
+                        player.children[26].rotation.z += -0.01;
+                        player.children[26].translateX(0.25);
+                    }   
+                }
+            }
+        }        
+        var leftDoorTrigger = function () {
+            if (player != null) {
+                if (leftDoorState) {
+                    if(player.children[27].rotation.z > -maxLeftRotation ){
+                        player.children[27].rotation.z += -0.01; //DRIVER DOOR
+                        player.children[27].translateX(0.18);
+                    }
+                }
+                else {
+                    if(player.children[27].rotation.z < minRotation ){
+                        player.children[27].rotation.z += 0.01; //DRIVER DOOR
+                        player.children[27].translateX(-0.18);
+                    }
+                }
+            }
+        }
+        var rightDoorTrigger = function () {
+            if (player != null) {
+                if (rightDoorState) {
+                    if(player.children[29].rotation.z < -maxRightRotation ){
+                        player.children[29].rotation.z += 0.01; //DRIVER DOOR
+                        player.children[29].translateX(-0.18);  
+                    }            
+                }
+                else {
+                    if(player.children[29].rotation.z > minRotation ){
+                        player.children[29].rotation.z += -0.01; //DRIVER DOOR
+                        player.children[29].translateX(0.18);  
+                    }            
+                }
+            }
+        }          
+        var wheelsTrigger = function () {
+            if(player != null) {
+                if(wheelsState) {
+                    player.children[1].rotation.y += 1;
+                    player.children[3].rotation.y += 1;
+                    player.children[5].rotation.y += 1;
+                    player.children[7].rotation.y += 1;
+                }
+                else {
+                    player.children[1].rotation.y += 0;
+                    player.children[3].rotation.y += 0;
+                    player.children[5].rotation.y += 0;
+                    player.children[7].rotation.y += 0;
+                }
+            }
+        }
+        var hoodTrigger = function () {
+            if(player != null) {
+                if(hoodState) {
+                    if(player.children[31].rotation.y < maxVerticalRotation) {
+                        player.children[31].rotation.y += 0.01;
+                        player.children[31].translateZ(0.18);
+                    }
+                }
+                else {
+                    if(player.children[31].rotation.y > minVerticalRotation) {
+                        player.children[31].rotation.y += -0.01;
+                        player.children[31].translateZ(-0.18);
+                    }
+                }
+            }
+        }
+        var trunkTrigger = function () {
+            if(player != null) {
+                if(trunkState) {
+                    if(player.children[30].rotation.y > -maxVerticalRotation) {
+                        player.children[30].rotation.y -= 0.01;
+                        player.children[30].translateZ(0.10);
+                    }
+                }
+                else {
+                    if(player.children[30].rotation.y < minVerticalRotation) {
+                        player.children[30].rotation.y += 0.01;
+                        player.children[30].translateZ(-0.10);
+                    }                    
+                }
+            }
+        }
+        function ColorTrigger() {
+            if(player != null){
+                if(colorState) {
+                    for (var i=0; i < player.children.length; i++) {
+                        player.children[i].material = new THREE.MeshStandardMaterial({color:0xffffff});
+                        partNumber = 0;
+                        document.getElementById("PartNumberText").innerHTML = "Part Number: " + 0;
+                    }                
+                }
+                else {
+                    for (var i=0; i < player.children.length; i++) {
+                        player.children[i].material = new THREE.MeshStandardMaterial({color:randomColor()});
+                        partNumber = 0;
+                        document.getElementById("PartNumberText").innerHTML = "Part Number: " + 0;
+                    }
+                }
+            }
+        }
+        function carTrigger() {
+            if(player != null){
+                if(carState) {
+                    player.rotation.y += 0.01;               
+                }
+                else {
+                    player.rotation.y += 0;               
+                }
+            }
+        }        
+        var changeModelColors = function () {
+            colorState = !colorState;
+            ColorTrigger();
+        }
+        //ON-OFF AUTO ROTATE FUNCTION
+        var RotateFunction = function () {
+            if(controls.autoRotate === true) {
+                controls.autoRotate = false;
+            }
+            else {
+                controls.autoRotate = true;
+            }
+        }
+        function buttonsTextTrigger () {
+            if(driverDoorState != false) {
+                document.getElementById("DriverDoorButton").innerHTML = "Close Driver Door";
+            }
+            else {
+                document.getElementById("DriverDoorButton").innerHTML = "Open Driver Door";
+            }
+            if(copilotDoorState != false) {
+                document.getElementById("CoPilotDoorButton").innerHTML = "Close Copilot Door";
+            }
+            else {
+                document.getElementById("CoPilotDoorButton").innerHTML = "Open Copilot Door";
+            }
+            if(leftDoorState != false) {
+                document.getElementById("LeftDoorButton").innerHTML = "Close Left Door";
+            }
+            else {
+                document.getElementById("LeftDoorButton").innerHTML = "Open Left Door";
+            }
+            if(rightDoorState != false) {
+                document.getElementById("RightDoorButton").innerHTML = "Close Right Door";
+            }
+            else {
+                document.getElementById("RightDoorButton").innerHTML = "Open Right Door";
+            }
+            if(hoodState != false) {
+                document.getElementById("HoodDoorButton").innerHTML = "Close Hood";
+            }
+            else {
+                document.getElementById("HoodDoorButton").innerHTML = "Open Hood";
+            }
+            if(trunkState != false) {
+                document.getElementById("TrunkButton").innerHTML = "Close Trunk";
+            }
+            else {
+                document.getElementById("TrunkButton").innerHTML = "Open Trunk";
+            }
+            if(wheelsState != false) {
+                document.getElementById("WheelsButton").innerHTML = "Stop Wheels";
+            }
+            else {
+                document.getElementById("WheelsButton").innerHTML = "Spin Wheels";
+            }
+            if(controls.autoRotate != false) {   
+                document.getElementById("LookButton").innerHTML = "Stop Camera";
+            }
+            else {
+                document.getElementById("LookButton").innerHTML = "Look Around";
+            }      
+            if(carState != false) {
+                document.getElementById("MoveCarButton").innerHTML = "Stop Car";
+            }                                          
+            else {
+                document.getElementById("MoveCarButton").innerHTML = "Move Car";
+            }
+            if(musicState != false) {
+                document.getElementById("ControlMusic").innerHTML = "Play Music";
+            }
+            else {
+                document.getElementById("ControlMusic").innerHTML = "Pause Music";
+            }
+        }
+        function lightPositionsTrigger () {
+            lightXPosition = document.getElementById("PointLightXPosition").value;
+            lightYPosition = document.getElementById("PointLightYPosition").value;
+            lightZPosition = document.getElementById("PointLightZPosition").value;
+            document.getElementById("PointLightXPositionText").innerHTML = "X: "+lightXPosition;
+            document.getElementById("PointLightYPositionText").innerHTML = "Y: "+lightYPosition;
+            document.getElementById("PointLightZPositionText").innerHTML = "Z: "+lightZPosition;
+            light.position.set(lightXPosition,lightYPosition,lightZPosition);
+        }
+
+        //DISPLAY AND ANIMATE//
+        var animate = function () {
+            requestAnimationFrame (animate);
+            controls.update();
+            driverDoorTrigger();
+            copilotDoorTrigger();
+            leftDoorTrigger();
+            rightDoorTrigger();
+            wheelsTrigger();
+            hoodTrigger();
+            trunkTrigger();
+            carTrigger();
+            renderer.render( scene, camera );
+            buttonsTextTrigger();
+            lightPositionsTrigger();
+            // musicTrigger();
+        }
+        animate();
+    </script>
+</body>
+</html>
